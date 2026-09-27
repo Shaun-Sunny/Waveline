@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <meta
+    name="theme-color"
+    content="#0b1020"
+  />
+
+  <title>Waveline</title>
+
+  <link
+    rel="stylesheet"
+    href="/styles.css"
+  />
+</head>
+
+<body>
+  <main id="app">
+
+    <!-- LANDING -->
+
+    <section
+      id="landing-screen"
+      class="screen active"
+    >
+      <div class="hero-card landing-hero">
+
+        <div
+          class="logo-mark"
+          aria-hidden="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="eyebrow">
+          MULTIPLAYER PARTY GAME
+        </div>
+
+        <h1>
+          Waveline
+        </h1>
+
+        <p class="hero-description">
+          One caller. One prediction.
+          Everyone else decides what wins.
+        </p>
+
+        <div class="landing-actions">
+
+          <button
+            id="create-room-button"
+            class="button button-primary button-large"
+          >
+            Create a Room
+          </button>
+
+          <button
+            id="show-join-button"
+            class="button button-secondary button-large"
+          >
+            Join a Room
+          </button>
+
+        </div>
+
+        <div class="feature-strip">
+          <span>
+            No accounts
+          </span>
+
+          <span>
+            3–10 players
+          </span>
+
+          <span>
+            Phone friendly
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- JOIN -->
+
+    <section
+      id="join-screen"
+      class="screen"
+    >
+      <div class="panel narrow-panel">
+
+        <button
+          id="join-back-button"
+          class="text-button"
+          type="button"
+        >
+          ← Back
+        </button>
+
+        <div class="eyebrow">
+          JOIN GAME
+        </div>
+
+        <h2>
+          Enter the room
+        </h2>
+
+        <form id="join-form">
+
+          <label for="room-code-input">
+            Room code
+          </label>
+
+          <input
+            id="room-code-input"
+            class="text-input room-code-input"
+            maxlength="6"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            placeholder="K7Q4"
+            required
+          />
+
+          <label for="nickname-input">
+            Nickname
+          </label>
+
+          <input
+            id="nickname-input"
+            class="text-input"
+            maxlength="16"
+            autocomplete="nickname"
+            placeholder="Your name"
+            required
+          />
+
+          <button
+            type="submit"
+            class="button button-primary button-large full-width"
+          >
+            Join Game
+          </button>
+
+        </form>
+
+        <div
+          id="join-error"
+          class="error-message hidden"
+        ></div>
+
+      </div>
+    </section>
+
+
+    <!-- CONNECTING -->
+
+    <section
+      id="connecting-screen"
+      class="screen"
+    >
+      <div class="panel status-panel">
+
+        <div class="spinner"></div>
+
+        <h2 id="connecting-title">
+          Connecting...
+        </h2>
+
+        <p id="connecting-message">
+          Establishing a live connection to Waveline.
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- HOST -->
+
+    <section
+      id="host-screen"
+      class="screen"
+    >
+
+      <header class="top-bar">
+
+        <div>
+          <div class="eyebrow">
+            HOST SCREEN
+          </div>
+
+          <h2>
+            Waveline
+          </h2>
+        </div>
+
+        <div class="room-code-badge">
+
+          <span>
+            ROOM
+          </span>
+
+          <strong id="host-room-code">
+            ----
+          </strong>
+
+        </div>
+
+      </header>
+
+
+      <!-- HOST LOBBY -->
+
+      <div
+        id="host-lobby"
+        class="host-grid"
+      >
+
+        <section class="panel qr-panel">
+
+          <div class="panel-heading">
+
+            <div>
+              <div class="eyebrow">
+                JOIN
+              </div>
+
+              <h3>
+                Scan to play
+              </h3>
+            </div>
+
+            <div
+              id="host-connection-dot"
+              class="connection-dot online"
+            >
+              <span></span>
+              Live
+            </div>
+
+          </div>
+
+          <div class="qr-wrapper">
+            <img
+              id="room-qr"
+              alt="QR code to join the Waveline room"
+            />
+          </div>
+
+          <div class="join-url-wrap">
+            <span id="join-url"></span>
+          </div>
+
+          <button
+            id="copy-link-button"
+            class="button button-secondary full-width"
+            type="button"
+          >
+            Copy Join Link
+          </button>
+
+          <div class="min-player-notice">
+
+            <strong id="host-player-count">
+              0
+            </strong>
+
+            <span>
+              / 10 players
+            </span>
+
+          </div>
+
+        </section>
+
+
+        <section class="panel lobby-panel">
+
+          <div class="panel-heading">
+
+            <div>
+              <div class="eyebrow">
+                LOBBY
+              </div>
+
+              <h3>
+                Players
+              </h3>
+            </div>
+
+            <div class="player-requirement">
+
+              <span id="host-connected-count">
+                0
+              </span>
+
+              connected
+
+            </div>
+
+          </div>
+
+          <div
+            id="host-player-list"
+            class="player-list"
+          ></div>
+
+          <div
+            id="host-empty-state"
+            class="empty-state"
+          >
+
+            <div class="empty-icon">
+              ◌
+            </div>
+
+            <h4>
+              Waiting for players
+            </h4>
+
+            <p>
+              Share the QR code or join link.
+            </p>
+
+          </div>
+
+
+          <div class="game-setup">
+
+            <div class="setup-heading">
+
+              <div>
+
+                <div class="eyebrow">
+                  GAME SETUP
+                </div>
+
+                <strong>
+                  Pick the vibe
+                </strong>
+
+              </div>
+
+              <span>
+                AI content
+              </span>
+
+            </div>
+
+
+            <label
+              for="vibe-select"
+              class="setup-label"
+            >
+              Vibe
+            </label>
+
+            <select
+              id="vibe-select"
+              class="text-input"
+            >
+
+              <option value="roast">
+                Roast Night
+              </option>
+
+              <option value="work">
+                Work Trivia
+              </option>
+
+              <option
+                value="family"
+                selected
+              >
+                Family Safe
+              </option>
+
+              <option value="deep">
+                Deep Cuts
+              </option>
+
+            </select>
+
+
+            <label
+              for="round-count-select"
+              class="setup-label setup-label-spaced"
+            >
+              Rounds
+            </label>
+
+            <select
+              id="round-count-select"
+              class="text-input"
+            >
+
+              <option value="6">
+                6 rounds
+              </option>
+
+              <option
+                value="7"
+                selected
+              >
+                7 rounds
+              </option>
+
+              <option value="8">
+                8 rounds
+              </option>
+
+            </select>
+
+
+            <button
+              id="start-game-button"
+              class="button button-primary button-large full-width"
+              type="button"
+              disabled
+            >
+              Start Game
+            </button>
+
+            <p
+              id="start-game-help"
+              class="setup-help"
+            >
+              At least 3 connected players are required.
+            </p>
+
+            <div
+              id="host-generation-status"
+              class="generation-status hidden"
+            >
+
+              <div class="mini-spinner"></div>
+
+              <span>
+                Generating a fresh game...
+              </span>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- HOST GAME -->
+
+      <section
+        id="host-game"
+        class="panel game-panel hidden"
+      >
+
+        <div class="game-top-line">
+
+          <div>
+
+            <div
+              id="host-phase-label"
+              class="eyebrow"
+            >
+              ROUND
+            </div>
+
+            <div
+              id="host-round-label"
+              class="round-label"
+            >
+              Round 1 / 7
+            </div>
+
+          </div>
+
+          <div
+            id="host-score-total"
+            class="score-pill"
+          >
+            <span>Round game</span>
+
+            <strong id="host-score-count">
+              LIVE
+            </strong>
+          </div>
+
+          <div class="timer-wrap">
+
+            <div
+              id="host-timer"
+              class="timer"
+            >
+              00
+            </div>
+
+            <div class="timer-track">
+              <span
+                id="host-timer-progress"
+              ></span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="host-game-content"
+          class="game-content"
+        ></div>
+
+
+        <div
+          id="host-game-footer"
+          class="game-footer"
+        ></div>
+
+      </section>
+
+    </section>
+
+
+    <!-- PLAYER -->
+
+    <section
+      id="player-screen"
+      class="screen"
+    >
+
+      <header class="player-header">
+
+        <div class="player-room-label">
+
+          ROOM
+
+          <strong id="player-room-code">
+            ----
+          </strong>
+
+        </div>
+
+        <div
+          id="player-connection-status"
+          class="connection-pill online"
+        >
+          <span></span>
+          Connected
+        </div>
+
+      </header>
+
+
+      <!-- PLAYER LOBBY -->
+
+      <div
+        id="player-lobby"
+        class="player-content"
+      >
+
+        <div class="eyebrow">
+          YOU'RE IN
+        </div>
+
+        <h1 id="player-welcome">
+          Welcome
+        </h1>
+
+        <p
+          id="player-lobby-status"
+          class="player-subtitle"
+        >
+          Stay on this screen.
+          The host will start the game when everyone is ready.
+        </p>
+
+        <div class="player-count-card">
+
+          <span
+            class="count-number"
+            id="player-count"
+          >
+            0
+          </span>
+
+          <span class="count-label">
+            players in the room
+          </span>
+
+        </div>
+
+
+        <div class="player-score-card">
+
+          <span>
+            Your score
+          </span>
+
+          <strong
+            id="player-lobby-score"
+          >
+            0
+          </strong>
+
+        </div>
+
+
+        <section class="panel player-lobby-panel">
+
+          <div class="panel-heading">
+
+            <h3>
+              Who's here?
+            </h3>
+
+          </div>
+
+          <div
+            id="player-list"
+            class="player-list compact"
+          ></div>
+
+        </section>
+
+
+        <div class="player-waiting">
+
+          <div
+            id="player-waiting-pulse"
+            class="waiting-pulse"
+          ></div>
+
+          <span id="player-waiting-text">
+            Waiting for the host...
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- PLAYER GAME -->
+
+      <div
+        id="player-game"
+        class="player-game hidden"
+      >
+
+        <div class="mobile-game-top">
+
+          <div>
+
+            <div
+              id="player-phase-label"
+              class="eyebrow"
+            >
+              ROUND
+            </div>
+
+            <div
+              id="player-round-label"
+              class="round-label"
+            >
+              Round 1 / 7
+            </div>
+
+          </div>
+
+          <div class="player-game-score">
+
+            <span>
+              Score
+            </span>
+
+            <strong
+              id="player-game-score-value"
+            >
+              0
+            </strong>
+
+          </div>
+
+          <div class="timer-wrap">
+
+            <div
+              id="player-timer"
+              class="timer"
+            >
+              00
+            </div>
+
+            <div class="timer-track">
+              <span
+                id="player-timer-progress"
+              ></span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="player-game-content"
+          class="player-game-content"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ERROR -->
+
+    <section
+      id="error-screen"
+      class="screen"
+    >
+      <div class="panel status-panel">
+
+        <div class="error-icon">
+          !
+        </div>
+
+        <div class="eyebrow">
+          CONNECTION ERROR
+        </div>
+
+        <h2 id="fatal-error-title">
+          Something went wrong
+        </h2>
+
+        <p id="fatal-error-message">
+          Waveline could not connect to the server.
+        </p>
+
+        <button
+          id="fatal-error-button"
+          class="button button-primary"
+          type="button"
+        >
+          Return to Start
+        </button>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <div
+    id="toast-container"
+    aria-live="polite"
+  ></div>
+
+
+  <script src="/app.js"></script>
+</body>
+</html>
